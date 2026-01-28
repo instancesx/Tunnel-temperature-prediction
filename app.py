@@ -135,11 +135,11 @@ if st.button("开始预测"):
 
     # ========= 图 1：月平均温度–月份（多断面） =========
     if len(Axial_Distances) == 0:
-        st.warning("请至少选择一个距入口断面位置。")
+        st.warning("Please select at least one axial distance.")
         st.stop()
 
     if len(Axial_Distances) > 4:
-        st.error("最多只能选择 4 个断面位置。")
+        st.error("Please select no more than 4 axial distances.")
         st.stop()
 
     fig1, ax1 = plt.subplots(figsize=(8, 5))
@@ -173,20 +173,20 @@ if st.button("开始预测"):
             monthly.values,
             marker="o",
             linewidth=2,
-            label=f"距入口 {int(dist)} m"
+            label=f"{int(dist)} m from the entrance"
         )
 
-    ax1.set_xlabel("月份")
-    ax1.set_ylabel("温度（℃）")
-    ax1.set_title("不同隧道断面月平均温度变化")
+    ax1.set_xlabel("Month")
+    ax1.set_ylabel("Temperature (°C)")
+    ax1.set_title("Monthly Mean Temperature at Different Tunnel Sections")
     ax1.set_xticks(np.arange(1, 13))
     ax1.grid(True, linestyle="--", alpha=0.6)
-    ax1.legend(title="断面位置")
+    ax1.legend(title="Section Location")
 
     st.pyplot(fig1)
 
     # ========= 图 2：温度–距离（20 m 间隔，固定月份） =========
-    st.markdown("### 沿隧道轴线的温度空间分布")
+    st.markdown("### Temperature–Distance Distribution")
 
     axial_positions = np.arange(0, int(Tunnel_Length) + 1, 20)
     temps_along_tunnel = []
@@ -227,7 +227,7 @@ if st.button("开始预测"):
         linewidth=2
     )
 
-    # —— 0 ℃ 等温位置标注 ——
+    # —— 0 ℃ 位置标注 ——
     sign_change_idx = np.where(np.diff(np.sign(temps_along_tunnel)))[0]
 
     if len(sign_change_idx) > 0:
@@ -245,14 +245,16 @@ if st.button("开始预测"):
         ax2.text(
             x0,
             0,
-            f"  0 ℃ 对应位置：{x0:.0f} m",
+            f"  0°C at {x0:.0f} m",
             color="red",
             verticalalignment="bottom"
         )
 
-    ax2.set_xlabel("距入口距离（m）")
-    ax2.set_ylabel("温度（℃）")
-    ax2.set_title(f"{Selected_Month} 月沿隧道轴线的温度分布")
+    ax2.set_xlabel("Axial Distance from Entrance (m)")
+    ax2.set_ylabel("Temperature (°C)")
+    ax2.set_title(
+        f"Temperature Distribution Along Tunnel Axis (Month {Selected_Month})"
+    )
     ax2.grid(True, linestyle="--", alpha=0.6)
 
     st.pyplot(fig2)
