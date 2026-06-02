@@ -6,6 +6,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 
+from matplotlib import font_manager
+
+fonts = sorted(
+    set(
+        f.name for f in font_manager.fontManager.ttflist
+    )
+)
+
+st.write(fonts[:100])
+
 from model import CNNGRU
 
 # ==========================
